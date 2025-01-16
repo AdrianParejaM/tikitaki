@@ -1,1 +1,1 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="[https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg](https://drive.google.com/drive/folders/1tzacE7-wbi8eCn7lvNXvx5pMlD3guJDn)" width="400" alt="Laravel Logo"></a></p>
+<p align="center"><img src="./Descargas/Logo_tiki_taki.png" width="400" alt="Laravel Logo"></p>
