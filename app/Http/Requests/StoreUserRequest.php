@@ -23,9 +23,9 @@ class StoreUserRequest extends FormRequest
     {
         return [
             'nickname'=>'required|max:30|unique:users',
-            'name'=>'required|max:255|$this->string()',
+            'name'=>'required|max:255|string',
             'email'=>'required|email|unique:users',
-            'password'=>'required|password|string|min:6'
+            'password'=>'required|alpha_num|min:6'
         ];
     }
 
