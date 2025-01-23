@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('leagues_users', function (Blueprint $table) {
+        Schema::create('leagues', function (Blueprint $table) {
+            $table->id();
+            $table->string('name_lineUp');
+            $table->string('description');
             $table->foreignId('user_id')->constrained();
             $table->foreignId('league_id')->constrained();
-            $table->enum('role', ['Admin', 'Player']);
-            $table->date('union_date');
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('leagues_users');
+        Schema::dropIfExists('line_ups');
     }
 };

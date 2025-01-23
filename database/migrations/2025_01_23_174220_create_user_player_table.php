@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::create('leagues_users', function (Blueprint $table) {
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('league_id')->constrained();
-            $table->enum('role', ['Admin', 'Player']);
-            $table->date('union_date');
+            $table->foreignId('player_id')->constrained();
+            $table->date('date_signing');
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('leagues_users');
+        //
     }
 };

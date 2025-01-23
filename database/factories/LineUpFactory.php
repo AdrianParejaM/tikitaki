@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\League>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\LineUp>
  */
-class LeagueFactory extends Factory
+class LineUpFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,9 +19,8 @@ class LeagueFactory extends Factory
     public function definition(): array
     {
         return [
-            'name_league' => fake()->domainName(),
+            'name_lineUp' => fake()->userName(),
             'description' => fake()->words(10),
-            'creation_date' => fake()->date(),
         ];
     }
 }

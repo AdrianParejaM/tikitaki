@@ -22,7 +22,22 @@ class StoreLeagueRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name'=>'required|max:30',
+            'description'=>'required|max:255|string',
+            'creation_date'=>'required'
         ];
+    }
+
+    public function messages()
+    {
+
+        return [
+            'name.required'=>'El nombre es obligatorio',
+            'name.max'=>'El nombre es demasiado largo',
+            'name'=>'Error en el nombre',
+            'description'=>'Error en la descripción',
+            'creation_date'=>'Error en la fecha de creación'
+        ];
+
     }
 }

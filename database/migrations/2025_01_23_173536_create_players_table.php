@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('leagues_users', function (Blueprint $table) {
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('league_id')->constrained();
-            $table->enum('role', ['Admin', 'Player']);
-            $table->date('union_date');
+        Schema::create('leagues', function (Blueprint $table) {
+            $table->id();
+            $table->string('name_player');
+            $table->enum('position', ['Goalkeeper', 'Defender', 'Midfielder', 'Forward']);
+            $table->integer('market_value');
+            $table->foreignId('club_id')->constrained();
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('leagues_users');
+        Schema::dropIfExists('players');
     }
 };
