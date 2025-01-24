@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -22,6 +23,7 @@ class PlayerFactory extends Factory
             'name_player' => fake()->userName(),
             'position' => fake()->randomElement(['Goalkeeper', 'Defender', 'Midfielder', 'Forward']),
             'market_value' => fake()->randomNumber(),
+            'club_id'=> DB::table('clubs')->inRandomOrder()->firstOrFail('id')->id
         ];
     }
 }

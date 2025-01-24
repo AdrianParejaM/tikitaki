@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -20,7 +21,9 @@ class LineUpFactory extends Factory
     {
         return [
             'name_lineUp' => fake()->userName(),
-            'description' => fake()->words(10),
+            'description' => fake()->word(),
+            'user_id'=> DB::table('users')->inRandomOrder()->firstOrFail('id')->id,
+            'league_id'=> DB::table('leagues')->inRandomOrder()->firstOrFail('id')->id
         ];
     }
 }

@@ -9,4 +9,5 @@ class LineUp extends Model
 {
     /** @use HasFactory<\Database\Factories\LineUpFactory> */
     use HasFactory;
+    protected $table = 'lineups';
 }
