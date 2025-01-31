@@ -18,3 +18,7 @@ Route::middleware('auth:sanctum')->group(function (){
 Route::post('/register', [RegisterUserApiController::class, 'register']);
 Route::post('/login', [LoginUserApiController::class, 'login']);
 Route::post('/logout', [LoginUserApiController::class, 'logout'])->middleware('auth:sanctum');
+
+/*Ejemplo para inmuebles
+Route::delete('/inmuebles', [InmuebleApiController::class, 'destroyAll'])->middleware(auth:sanctum);
+*/
