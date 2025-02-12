@@ -8,6 +8,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -49,4 +52,24 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function leagues(): BelongsToMany
+    {
+        return $this->belongsToMany(League::class)
+            ->withPivot('role', 'union_date')
+            ->withTimestamps();
+    }
+
+    public function lineups(): HasMany
+    {
+        return $this->hasMany(Lineup::class);
+    }
+
+    public function players(): BelongsToMany
+    {
+        return $this->belongsToMany(Player::class, 'user_player')
+            ->withPivot('date_signing')
+            ->withTimestamps();
+    }
+
 }

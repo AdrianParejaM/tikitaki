@@ -25,6 +25,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'Añadir jugador']);
         Permission::create(['name' => 'Editar jugador']);
         Permission::create(['name' => 'Borrar jugador']);
+        Permission::create(['name' => 'Ver usuarios']);
 
         //Permiso para admin y player
         Permission::create(['name' => 'Ver jugador']);
@@ -38,7 +39,8 @@ class PermissionSeeder extends Seeder
             'Editar jugador',
             'Borrar jugador',
             'Ver jugador',
-            'Ver formación'
+            'Ver formación',
+            'Ver usuarios'
         ]);
 
         $player = Role::findByName('Player');
