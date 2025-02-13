@@ -22,7 +22,10 @@ class UpdatePlayerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name_player' => 'sometimes|string|max:255',
+            'position' => 'sometimes|in:Goalkeeper,Defender,Midfielder,Forward',
+            'market_value' => 'sometimes|integer|min:0',
+            'club_id' => 'sometimes|exists:clubs,id',
         ];
     }
 }

@@ -22,9 +22,10 @@ class StoreLeagueRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'=>'required|max:30',
-            'description'=>'required|max:255|string',
-            'creation_date'=>'required'
+            'name_league' => 'required|string|max:255|unique:leagues,name_league',
+            'description' => 'nullable|string',
+            'user_id' => 'required|exists:users,id',
+            'creation_date' => 'required|date',
         ];
     }
 
@@ -32,9 +33,8 @@ class StoreLeagueRequest extends FormRequest
     {
 
         return [
-            'name.required'=>'El nombre es obligatorio',
-            'name.max'=>'El nombre es demasiado largo',
-            'name'=>'Error en el nombre',
+            'name_league.max'=>'El nombre es demasiado largo',
+            'name_league'=>'Error en el nombre',
             'description'=>'Error en la descripción',
             'creation_date'=>'Error en la fecha de creación'
         ];

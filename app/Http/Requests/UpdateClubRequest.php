@@ -22,7 +22,9 @@ class UpdateClubRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name_club' => 'sometimes|string|max:255|unique:clubs,name_club,',
+            'city' => 'sometimes|string|max:255',
+            'foundation' => 'sometimes|date',
         ];
     }
 }

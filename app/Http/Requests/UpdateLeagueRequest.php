@@ -22,7 +22,10 @@ class UpdateLeagueRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name_league' => 'sometimes|string|max:255|unique:leagues,name_league,',
+            'description' => 'sometimes|string|nullable',
+            'user_id' => 'sometimes|exists:users,id',
+            'creation_date' => 'sometimes|date',
         ];
     }
 }

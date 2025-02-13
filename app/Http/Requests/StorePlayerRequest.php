@@ -22,7 +22,10 @@ class StorePlayerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name_player' => 'required|string|max:255',
+            'position' => 'required|in:Goalkeeper,Defender,Midfielder,Forward',
+            'market_value' => 'required|integer|min:0',
+            'club_id' => 'required|exists:clubs,id',
         ];
     }
 }

@@ -22,7 +22,9 @@ class StoreClubRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name_club' => 'required|string|max:255|unique:clubs,name_club',
+            'city' => 'required|string|max:255',
+            'foundation' => 'required|date',
         ];
     }
 }

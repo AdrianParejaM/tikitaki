@@ -22,7 +22,10 @@ class StoreLineUpRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name_lineUp' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'user_id' => 'required|exists:users,id',
+            'league_id' => 'required|exists:leagues,id',
         ];
     }
 }

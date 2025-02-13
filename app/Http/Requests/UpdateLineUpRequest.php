@@ -22,7 +22,10 @@ class UpdateLineUpRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name_lineUp' => 'sometimes|string|max:255',
+            'description' => 'sometimes|string|nullable',
+            'user_id' => 'sometimes|exists:users,id',
+            'league_id' => 'sometimes|exists:leagues,id',
         ];
     }
 }
