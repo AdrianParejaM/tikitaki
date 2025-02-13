@@ -22,3 +22,6 @@ Route::post('/logout', [LoginUserApiController::class, 'logout'])->middleware('a
 /*Ejemplo para inmuebles
 Route::delete('/inmuebles', [InmuebleApiController::class, 'destroyAll'])->middleware(auth:sanctum);
 */
+Route::get('hola',function(){
+    dump("Hola");
+});
