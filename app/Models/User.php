@@ -53,6 +53,11 @@ class User extends Authenticatable
         ];
     }
 
+
+    /**
+     * Relación para obtener las ligas en las que participa el usuario.
+     * @return BelongsToMany
+     */
     public function leagues(): BelongsToMany
     {
         return $this->belongsToMany(League::class)
@@ -60,11 +65,19 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
+    /**
+     *  Relación para obtener las alineaciones creadas por el usuario.
+     * @return HasMany
+     */
     public function lineups(): HasMany
     {
         return $this->hasMany(Lineup::class);
     }
 
+    /**
+     *  Relación para obtener los jugadores asociados al usuario.
+     * @return BelongsToMany
+     */
     public function players(): BelongsToMany
     {
         return $this->belongsToMany(Player::class, 'user_player')

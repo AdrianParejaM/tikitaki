@@ -13,11 +13,20 @@ class League extends Model
     /** @use HasFactory<\Database\Factories\LeagueFactory> */
     use HasFactory;
 
+
+    /**
+     *  Relación para obtener el usuario administrador de la liga.
+     * @return BelongsTo
+     */
     public function admin(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    /**
+     *  Relación para obtener los usuarios asociados a la liga.
+     * @return BelongsToMany
+     */
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class)
@@ -25,6 +34,10 @@ class League extends Model
             ->withTimestamps();
     }
 
+    /**
+     *  Relación para obtener las alineaciones de la liga.
+     * @return HasMany
+     */
     public function lineups(): HasMany
     {
         return $this->hasMany(Lineup::class);
