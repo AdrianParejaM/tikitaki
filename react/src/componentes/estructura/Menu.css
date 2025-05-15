@@ -31,3 +31,8 @@
     border-color: rgb(230, 51, 51);
     transition: 0.4s;
   }
+
+  .inicio:hover {
+    background-color: #7bb369;
+    color: rgb(238, 238, 238);
+  }

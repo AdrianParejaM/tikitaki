@@ -10,7 +10,7 @@ const Menu = () => {
   return (
     <>
     <div className='navegacion__menu'>
-          <Link className='navegacion__enlace' to='/'>
+          <Link className='navegacion__enlace inicio' to='/'>
             Inicio
           </Link>
 
