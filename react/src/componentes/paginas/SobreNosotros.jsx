@@ -1,4 +1,5 @@
 import React from 'react';
+import ig from '../../imagenes/ig.png';
 
 const SobreNosotros = () => {
   return (
@@ -53,33 +54,16 @@ const SobreNosotros = () => {
               contacto@tikitaki.com
             </a>
             {" "}
-            o síguenos en nuestras redes sociales.
+            o síguenos en nuestra red social.
           </p>
           <div className="flex justify-center gap-6">
-            {/* Íconos genéricos para placeholder */}
-            <a
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-10 h-10 rounded-full bg-[#7bb369] flex items-center justify-center font-bold hover:scale-110 transition-transform"
-            >
-              F
-            </a>
-            <a
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-10 h-10 rounded-full bg-[#7bb369] flex items-center justify-center font-bold hover:scale-110 transition-transform"
-            >
-              X
-            </a>
             <a
               href="https://www.instagram.com/tikitak1_/"
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 rounded-full bg-[#7bb369] flex items-center justify-center font-bold hover:scale-110 transition-transform"
             >
-              I
+              <img src={ig} alt="Instagram" />
             </a>
           </div>
         </section>
