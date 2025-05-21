@@ -7,19 +7,21 @@ import Rutas from './componentes/rutas/Rutas.jsx';
 import Pie from './componentes/estructura/Pie.jsx';
 
 function App() {
-
   return (
     <>
-    <ProveedorSesion>
-      <Cabecera />
-      <Menu />
-      <Contenido>
-        <Rutas />
-      </Contenido>
-      <Pie />
-    </ProveedorSesion>
+      <ProveedorSesion>
+        <Cabecera />
+        {/* Menú de desktop con fondo #272727 */}
+        <div className="hidden md:block bg-[#1f1f1f] b-0px">
+          <Menu />
+        </div>
+        <Contenido>
+          <Rutas />
+        </Contenido>
+        <Pie />
+      </ProveedorSesion>
     </>
   )
 }
 
-export default App
+export default App;
