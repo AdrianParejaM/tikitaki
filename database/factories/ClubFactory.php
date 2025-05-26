@@ -22,6 +22,9 @@ class ClubFactory extends Factory
             'name_club' => fake()->city().' FC',
             'city' => fake()->city(),
             'foundation' => fake()->date(),
+            'api_id' => fake()->unique()->randomNumber(5),
+            'image' => fake()->imageUrl(200, 200, 'sports'),
+            'venue_name' => fake()->company().' Stadium'
         ];
     }
 }

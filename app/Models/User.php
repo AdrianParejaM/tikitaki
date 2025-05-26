@@ -61,7 +61,7 @@ class User extends Authenticatable
     public function leagues(): BelongsToMany
     {
         return $this->belongsToMany(League::class)
-            ->withPivot('role', 'union_date')
+            ->withPivot('is_admin')
             ->withTimestamps();
     }
 
@@ -74,15 +74,25 @@ class User extends Authenticatable
         return $this->hasMany(Lineup::class);
     }
 
+
     /**
      *  Relación para obtener los jugadores asociados al usuario.
      * @return BelongsToMany
      */
     public function players(): BelongsToMany
     {
-        return $this->belongsToMany(Player::class, 'user_player')
-            ->withPivot('date_signing')
-            ->withTimestamps();
+        return $this->belongsToMany(Player::class, 'user_player', 'user_id', 'player_id')
+            ->using(UserPlayer::class)
+            ->withPivot('league_id', 'date_signing');
+    }
+
+// Añade este método para verificar jugadores únicos
+    public function hasPlayerInLeague($playerId, $leagueId)
+    {
+        return $this->players()
+            ->where('player_id', $playerId)
+            ->where('league_id', $leagueId)
+            ->exists();
     }
 
 }

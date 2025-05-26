@@ -11,6 +11,14 @@ class Club extends Model
     /** @use HasFactory<\Database\Factories\ClubFactory> */
     use HasFactory;
 
+    protected $fillable = [
+        'api_id',
+        'name_club',
+        'city',
+        'foundation',
+        'image',
+        'venue_name'
+    ];
 
     /**
      *  Relación para obtener los jugadores que pertenecen al club.

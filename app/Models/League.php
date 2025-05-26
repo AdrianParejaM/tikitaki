@@ -13,6 +13,12 @@ class League extends Model
     /** @use HasFactory<\Database\Factories\LeagueFactory> */
     use HasFactory;
 
+    protected $fillable = [
+        'name_league',
+        'description',
+        'user_id',
+        'creation_date'
+    ];
 
     /**
      *  Relación para obtener el usuario administrador de la liga.
@@ -21,6 +27,16 @@ class League extends Model
     public function admin(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     *  Relación para obtener los jugadores asociados a la liga.
+     * @return BelongsToMany
+     */
+    public function players()
+    {
+        return $this->belongsToMany(Player::class, 'user_player')
+            ->withPivot('user_id', 'date_signing');
     }
 
     /**
@@ -41,5 +57,17 @@ class League extends Model
     public function lineups(): HasMany
     {
         return $this->hasMany(Lineup::class);
+    }
+
+    public function assignedPlayers()
+    {
+        return $this->hasManyThrough(
+            Player::class,
+            UserPlayer::class,
+            'league_id',
+            'id',
+            'id',
+            'player_id'
+        );
     }
 }

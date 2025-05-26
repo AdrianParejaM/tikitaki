@@ -13,7 +13,15 @@ class LineUp extends Model
 {
     /** @use HasFactory<\Database\Factories\LineUpFactory> */
     use HasFactory;
+
     protected $table = 'lineups';
+
+    protected $fillable = [
+        'name_lineUp',  // Asegúrate de que coincida con el nombre en la migración
+        'description',
+        'user_id',
+        'league_id'
+    ];
 
 
     /**

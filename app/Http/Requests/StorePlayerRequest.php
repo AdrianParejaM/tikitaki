@@ -11,7 +11,7 @@ class StorePlayerRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -26,6 +26,8 @@ class StorePlayerRequest extends FormRequest
             'position' => 'required|in:Goalkeeper,Defender,Midfielder,Forward',
             'market_value' => 'required|integer|min:0',
             'club_id' => 'required|exists:clubs,id',
+            'api_id' => 'sometimes|integer|unique:players,api_id',
+            'nationality' => 'sometimes|string|max:3'
         ];
     }
 }

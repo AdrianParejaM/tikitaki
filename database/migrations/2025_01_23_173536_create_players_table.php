@@ -16,7 +16,10 @@ return new class extends Migration
             $table->string('name_player');
             $table->enum('position', ['Goalkeeper', 'Defender', 'Midfielder', 'Forward']);
             $table->integer('market_value');
+            $table->string('image')->nullable();
             $table->foreignId('club_id')->constrained();
+            $table->integer('api_id')->unique();
+            $table->string('nationality', 50)->nullable();
             $table->timestamps();
         });
     }
