@@ -1,0 +1,9 @@
+#contenido_principal{
+    background-color: #272727;
+    border-radius: 4px;
+    margin-top: 15px;
+    padding: 10px 10px 10px 15px;
+    width: 100%;
+    min-height: 500px;
+    text-align: left;
+  }
