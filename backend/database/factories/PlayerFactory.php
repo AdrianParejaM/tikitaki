@@ -20,10 +20,13 @@ class PlayerFactory extends Factory
     public function definition(): array
     {
         return [
-            'name_player' => fake()->userName(),
+            'name_player' => fake()->firstName().' '.fake()->lastName(),
             'position' => fake()->randomElement(['Goalkeeper', 'Defender', 'Midfielder', 'Forward']),
-            'market_value' => fake()->randomNumber(),
-            'club_id'=> DB::table('clubs')->inRandomOrder()->firstOrFail('id')->id
+            'market_value' => fake()->numberBetween(100000, 5000000),
+            'club_id' => \App\Models\Club::factory(),
+            'api_id' => fake()->unique()->randomNumber(6),
+            'nationality' => fake()->countryCode(),
+            'image' => fake()->imageUrl(200, 200, 'people')
         ];
     }
 }

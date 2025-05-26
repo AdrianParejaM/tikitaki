@@ -22,14 +22,24 @@ class Player extends Model
         return $this->belongsTo(Club::class);
     }
 
+    protected $fillable = [
+        'api_id',
+        'name_player',
+        'position',
+        'market_value',
+        'club_id',
+        'image',
+        'nationality'
+    ];
+
     /**
      *  Relación para obtener los usuarios asociados al jugador.
      * @return BelongsToMany
      */
-    public function users(): BelongsToMany
+    public function users():BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'user_player')
-            ->withPivot('date_signing')
-            ->withTimestamps();
+        return $this->belongsToMany(User::class, 'user_player', 'player_id', 'user_id')
+            ->using(UserPlayer::class)
+            ->withPivot('league_id', 'date_signing');
     }
 }

@@ -11,7 +11,7 @@ class UpdateClubRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,9 +22,11 @@ class UpdateClubRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name_club' => 'sometimes|string|max:255|unique:clubs,name_club,',
+            'name_club' => 'sometimes|string|max:255|unique:clubs,name_club,'.$this->club->id,
             'city' => 'sometimes|string|max:255',
             'foundation' => 'sometimes|date',
+            'api_id' => 'sometimes|integer|unique:clubs,api_id,'.$this->club->id,
+            'image' => 'sometimes|url'
         ];
     }
 }

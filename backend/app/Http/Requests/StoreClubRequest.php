@@ -11,7 +11,7 @@ class StoreClubRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,6 +25,8 @@ class StoreClubRequest extends FormRequest
             'name_club' => 'required|string|max:255|unique:clubs,name_club',
             'city' => 'required|string|max:255',
             'foundation' => 'required|date',
+            'api_id' => 'sometimes|integer|unique:clubs,api_id',
+            'image' => 'sometimes|url'
         ];
     }
 }

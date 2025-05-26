@@ -11,7 +11,7 @@ class UpdatePlayerRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -26,6 +26,8 @@ class UpdatePlayerRequest extends FormRequest
             'position' => 'sometimes|in:Goalkeeper,Defender,Midfielder,Forward',
             'market_value' => 'sometimes|integer|min:0',
             'club_id' => 'sometimes|exists:clubs,id',
+            'api_id' => 'sometimes|integer|unique:players,api_id,'.$this->player->id,
+            'nationality' => 'sometimes|string|max:3'
         ];
     }
 }

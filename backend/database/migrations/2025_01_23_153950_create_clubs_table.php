@@ -16,6 +16,10 @@ return new class extends Migration
             $table->string('name_club');
             $table->string('city');
             $table->date('foundation');
+            $table->string('image')->nullable();
+            $table->integer('api_id')->unique();
+            $table->string('venue_name')->nullable();
+            $table->integer('venue_capacity')->nullable();
             $table->timestamps();
         });
     }

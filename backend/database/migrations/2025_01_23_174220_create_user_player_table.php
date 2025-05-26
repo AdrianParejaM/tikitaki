@@ -6,24 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
         Schema::create('user_player', function (Blueprint $table) {
             $table->foreignId('user_id')->constrained();
             $table->foreignId('player_id')->constrained();
-            $table->date('date_signing');
+            $table->foreignId('league_id')->constrained();
+            $table->date('date_signing')->default(now());
             $table->timestamps();
+
+            $table->primary(['user_id', 'player_id', 'league_id']);
+
+            // Asegura que un jugador solo esté en una liga
+            $table->unique(['player_id', 'league_id']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
-        //
+        Schema::dropIfExists('user_player');
     }
 };
