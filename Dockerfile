@@ -1,4 +1,4 @@
-# Dockerfile para Laravel
+# Dockerfile para Laravel en producción
 FROM php:8.2-fpm
 
 # Instalar dependencias del sistema
@@ -14,26 +14,27 @@ RUN apt-get update && apt-get install -y \
     curl \
     libzip-dev \
     libpq-dev \
-    libmcrypt-dev \
-    mariadb-client \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
+    && docker-php-ext-install pdo pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd zip
 
-# Instalar Composer
+# Instalar Composer (versión específica para estabilidad)
 COPY --from=composer:2.5 /usr/bin/composer /usr/bin/composer
 
-# Copiar el proyecto
-WORKDIR /var/www
+# Configurar el directorio de trabajo
+WORKDIR /var/www/html
+
+# Copiar solo lo necesario para composer (optimización de capas Docker)
+COPY composer.json composer.lock ./
+
+# Instalar dependencias PHP (sin dev y optimizando autoloader)
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
+
+# Copiar el resto de la aplicación
 COPY . .
 
-# Instalar dependencias PHP
-RUN composer install --no-dev --optimize-autoloader
-
-# Permisos
-RUN chown -R www-data:www-data /var/www && chmod -R 755 /var/www
-
-# Generar clave
-RUN php artisan key:generate
+# Configurar permisos
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Puerto y comando
-EXPOSE 8080
-CMD php artisan serve --host=0.0.0.0 --port=8080
+EXPOSE 9000
+CMD ["php-fpm"]
