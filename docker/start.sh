@@ -1,5 +1,5 @@
 #!/bin/sh
-# Inicia PHP-FPM en segundo plano
-php-fpm -D
-# Inicia Nginx en primer plano
-nginx -g 'daemon off;'
+# Iniciar PHP-FPM en modo foreground
+php-fpm -D -R
+# Iniciar Nginx en modo foreground
+nginx -g "daemon off;"
