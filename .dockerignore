@@ -1,0 +1,6 @@
+.git/
+docker/
+node_modules/
+vendor/
+*.env
+*.md
