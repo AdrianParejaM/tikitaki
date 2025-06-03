@@ -1,4 +1,4 @@
-# Stage 1 - Builder para optimizar el proceso
+# Stage 1 - Instalación de dependencias
 FROM php:8.2-cli as builder
 
 WORKDIR /var/www/html
@@ -17,15 +17,17 @@ COPY --from=composer:2.5 /usr/bin/composer /usr/bin/composer
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
 
+# Stage 2 - Construcción de la aplicación
+FROM builder as app
+
 # Copiar el resto de la aplicación
 COPY . .
 
-# Limpiar cache y optimizar
-RUN composer dump-autoload --optimize && \
-    php artisan optimize:clear && \
-    php artisan optimize
+# Limpieza y optimización (sin usar artisan durante el build)
+RUN rm -rf bootstrap/cache/*.php && \
+    composer dump-autoload --optimize
 
-# Stage 2 - Imagen final de producción
+# Stage 3 - Imagen final de producción
 FROM php:8.2-fpm
 
 # Instalar dependencias mínimas
@@ -35,23 +37,21 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Copiar desde el builder
-COPY --from=builder /var/www/html /var/www/html
+COPY --from=app /var/www/html /var/www/html
 
 # Configurar PHP-FPM
 RUN echo "listen = 9000" > /usr/local/etc/php-fpm.d/zz-render.conf
 
-# Configurar Nginx
+# Configuración mínima de Nginx
 RUN echo "\
 server { \
     listen 8080; \
     server_name _; \
     root /var/www/html/public; \
     index index.php index.html; \
-    \
     location / { \
         try_files \$uri \$uri/ /index.php?\$query_string; \
     } \
-    \
     location ~ \.php$ { \
         fastcgi_pass 127.0.0.1:9000; \
         fastcgi_index index.php; \
@@ -71,4 +71,5 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
 
 EXPOSE 8080
 
-CMD sh -c "php-fpm && nginx -g 'daemon off;'"
+# Comando de inicio optimizado (las optimizaciones se hacen en runtime)
+CMD sh -c "php artisan optimize:clear && php artisan optimize && php-fpm && nginx -g 'daemon off;'"
