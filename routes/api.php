@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\LeagueController;
 use App\Http\Controllers\Api\LineupController;
 use App\Http\Controllers\Api\PlayerController;
 use App\Http\Controllers\Api\FootballApiController;
+use App\Http\Controllers\AuthController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -47,3 +48,5 @@ Route::prefix('football')->group(function () {
     Route::get('players', [FootballApiController::class, 'getSegundaDivisionPlayers']);
     Route::post('sync', [FootballApiController::class, 'syncTeamsAndPlayers']);
 });
+
+Route::post('/register', [AuthController::class, 'register']);
