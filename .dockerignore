@@ -4,8 +4,7 @@ docker-compose*
 node_modules/
 vendor/
 bootstrap/cache/*
-storage/logs/*
+!bootstrap/cache/.gitkeep
 storage/framework/cache/*
 storage/framework/views/*
 storage/framework/sessions/*
-!bootstrap/cache/.gitkeep

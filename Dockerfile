@@ -1,5 +1,6 @@
 FROM php:8.2-fpm
 
+# 1. Instalar dependencias
 RUN apt-get update && apt-get install -y \
     nginx \
     libpng-dev libjpeg-dev libfreetype6-dev \
@@ -8,42 +9,44 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd zip \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# 2. Configurar directorios
 RUN mkdir -p /var/www/html \
     && mkdir -p /var/log/nginx \
     && touch /var/log/nginx/access.log \
     /var/log/nginx/error.log
 
+# 3. Instalar Composer
 COPY --from=composer:2.5 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-# Limpieza exhaustiva ANTES de copiar los archivos
-RUN rm -rf bootstrap/cache/*.php \
-    && rm -rf storage/framework/cache/* \
-    && rm -rf storage/framework/views/*
+# 4. Limpieza radical inicial
+RUN rm -rf /var/www/html/*
 
-# Copiar solo lo necesario para composer
+# 5. Copiar solo lo necesario para composer
 COPY composer.json composer.lock ./
 
-# Instalar dependencias
+# 6. Instalar dependencias
 RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
 
-# Copiar el resto de la aplicación
+# 7. Copiar el resto de la aplicación
 COPY . .
 
-# Limpieza POST-copia y configuración de permisos
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 775 storage bootstrap/cache \
-    && php artisan clear-compiled \
-    && rm -rf bootstrap/cache/*.php \
-    && rm -rf storage/framework/cache/*
+# 8. Limpieza exhaustiva post-copia
+RUN rm -rf bootstrap/cache/* \
+    && rm -rf storage/framework/cache/* \
+    && rm -rf storage/framework/views/* \
+    && rm -rf storage/framework/sessions/*
 
-RUN echo "listen = 9000" > /usr/local/etc/php-fpm.d/zz-render.conf
-COPY docker/nginx.conf /etc/nginx/nginx.conf
-
+# 9. Configurar permisos
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 storage bootstrap/cache
 
+# 10. Configurar Nginx y PHP-FPM
+COPY docker/nginx.conf /etc/nginx/nginx.conf
+RUN echo "listen = 9000" > /usr/local/etc/php-fpm.d/zz-render.conf
+
 EXPOSE 8080
 
-CMD ["sh", "-c", "php artisan migrate --force && php artisan config:cache && php artisan route:cache && php-fpm -D && nginx -g 'daemon off;'"]
+# 11. Comando de inicio seguro
+CMD ["sh", "-c", "composer dump-autoload && php artisan config:clear && php artisan cache:clear && php artisan view:clear && php artisan route:clear && php artisan config:cache && php artisan route:cache && php-fpm -D && nginx -g 'daemon off;'"]
