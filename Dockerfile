@@ -17,6 +17,9 @@ COPY --from=composer:2.5 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
+# Limpiar caché antes de la instalación
+RUN rm -rf bootstrap/cache/*.php
+
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
 
