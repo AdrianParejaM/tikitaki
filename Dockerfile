@@ -29,6 +29,10 @@ RUN apt-get update && apt-get install -y \
     nginx \
     && mkdir -p /var/www/html/storage \
     /var/www/html/bootstrap/cache \
+    /var/log/nginx \
+    && touch /var/log/nginx/access.log \
+    /var/log/nginx/error.log \
+    && chown -R www-data:www-data /var/log/nginx \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # 6. Copiar aplicación
@@ -37,21 +41,14 @@ COPY --from=builder /var/www/html /var/www/html
 # 7. Configuración PHP-FPM
 RUN echo "listen = 9000" > /usr/local/etc/php-fpm.d/zz-render.conf
 
-# 8. Configuración Nginx
-COPY docker/nginx.conf /etc/nginx/nginx.conf
+# 8. Configuración Nginx (versión simplificada)
+COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 
 # 9. Permisos
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/storage \
     && chmod -R 775 /var/www/html/bootstrap/cache
 
-# 10. Configurar logs (versión corregida)
-RUN touch /var/log/nginx/access.log \
-    /var/log/nginx/error.log \
-    && chown -R www-data:www-data /var/log/nginx \
-    && ln -sf /dev/stdout /var/log/nginx/access.log \
-    && ln -sf /dev/stderr /var/log/nginx/error.log
-
 EXPOSE 8080
 
-CMD ["sh", "-c", "php-fpm -D && nginx -g 'daemon off;'"]
+CMD ["sh", "-c", "ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/nginx/error.log && php-fpm -D && nginx -g 'daemon off;'"]
