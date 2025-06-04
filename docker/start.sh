@@ -1,22 +1,27 @@
 #!/bin/bash
 
-# Esperar a que la base de datos esté lista (solo para PostgreSQL)
-while ! pg_isready -h $DB_HOST -p $DB_PORT -U $DB_USERNAME -d $DB_DATABASE -t 1; do
-    sleep 1
-done
+# Limpieza radical de caché
+rm -rf bootstrap/cache/*.php
+rm -rf storage/framework/cache/*
+rm -rf storage/framework/views/*
 
-# Ejecutar migraciones
-php artisan migrate --force
+# Reconstruir autoloader
+composer dump-autoload
 
-# Limpiar cachés
+# Configuración inicial
+php artisan clear-compiled
 php artisan cache:clear
 php artisan config:clear
 php artisan route:clear
 php artisan view:clear
 
-# Reconstruir cachés
+# Ejecutar migraciones
+php artisan migrate --force
+
+# Optimizar para producción
 php artisan config:cache
 php artisan route:cache
+php artisan view:cache
 
 # Iniciar servicios
 php-fpm -D

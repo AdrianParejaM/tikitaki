@@ -17,13 +17,26 @@ COPY --from=composer:2.5 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-# Limpiar caché antes de la instalación
-RUN rm -rf bootstrap/cache/*.php
+# Limpieza exhaustiva ANTES de copiar los archivos
+RUN rm -rf bootstrap/cache/*.php \
+    && rm -rf storage/framework/cache/* \
+    && rm -rf storage/framework/views/*
 
+# Copiar solo lo necesario para composer
 COPY composer.json composer.lock ./
+
+# Instalar dependencias
 RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
 
+# Copiar el resto de la aplicación
 COPY . .
+
+# Limpieza POST-copia y configuración de permisos
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 775 storage bootstrap/cache \
+    && php artisan clear-compiled \
+    && rm -rf bootstrap/cache/*.php \
+    && rm -rf storage/framework/cache/*
 
 RUN echo "listen = 9000" > /usr/local/etc/php-fpm.d/zz-render.conf
 COPY docker/nginx.conf /etc/nginx/nginx.conf
