@@ -49,4 +49,4 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 EXPOSE 8080
 
 # Comando de inicio optimizado
-CMD ["sh", "-c", "php artisan optimize && php-fpm -D && nginx -g 'daemon off;'"]
+CMD ["sh", "-c", "cd /var/www/html && php artisan optimize && php-fpm -D && nginx -g 'daemon off;'"]
