@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'paths' => ['api/*', 'sanctum/csrf-cookie', 'login', 'logout', 'register'],
+    'paths' => ['*'], // Permitir todos los paths
     'allowed_methods' => ['*'],
     'allowed_origins' => ['https://tikitaki.onrender.com'],
     'allowed_origins_patterns' => [],
