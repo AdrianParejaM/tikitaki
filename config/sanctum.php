@@ -15,10 +15,7 @@ return [
     |
     */
 
-    'stateful' => explode(',', env(
-        'SANCTUM_STATEFUL_DOMAINS',
-        'tikitaki.onrender.com,localhost,127.0.0.1'
-    )),
+    'stateful' => explode(',', env('SANCTUM_STATEFUL_DOMAINS', 'tikitaki.onrender.com,localhost,127.0.0.1')),
     /*
     |--------------------------------------------------------------------------
     | Sanctum Guards
