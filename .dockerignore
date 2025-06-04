@@ -1,7 +1,7 @@
 .git/
-docker-compose*
 .env
+docker-compose*
 node_modules/
 vendor/
+bootstrap/cache/*
 storage/logs/*
-bootstrap/cache/*.php
