@@ -14,8 +14,7 @@ RUN apt-get update && apt-get install -y \
 RUN mkdir -p /var/www/html \
     && mkdir -p /var/log/nginx \
     && touch /var/log/nginx/access.log \
-    /var/log/nginx/error.log \
-    && chown -R www-data:www-data /var/log/nginx /var/www/html
+    /var/log/nginx/error.log
 
 # 3. Instalar Composer
 COPY --from=composer:2.5 /usr/bin/composer /usr/bin/composer
@@ -35,18 +34,15 @@ RUN echo "listen = 9000" > /usr/local/etc/php-fpm.d/zz-render.conf
 # 7. Configuración de Nginx
 COPY docker/nginx.conf /etc/nginx/nginx.conf
 
-# 8. Configurar permisos y limpiar caché
+# 8. Configurar permisos (sin ejecutar comandos artisan durante el build)
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 storage bootstrap/cache \
-    && rm -rf bootstrap/cache/* \
-    && php artisan clear-compiled \
-    && php artisan cache:clear \
-    && php artisan config:clear \
-    && php artisan route:clear \
-    && php artisan view:clear
+    && rm -rf bootstrap/cache/*
 
 # 9. Puerto expuesto
 EXPOSE 8080
 
-# 10. Comando de inicio
-CMD ["sh", "-c", "php artisan config:cache && php artisan route:cache && php artisan view:cache && php-fpm -D && nginx -g 'daemon off;'"]
+# 10. Script de inicio
+COPY docker/start.sh /usr/local/bin/start
+RUN chmod +x /usr/local/bin/start
+CMD ["start"]
