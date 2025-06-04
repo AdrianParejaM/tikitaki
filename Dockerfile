@@ -33,30 +33,28 @@ COPY --from=builder /var/www/html /var/www/html
 # 6. Configuración de PHP-FPM
 RUN echo "listen = 9000" > /usr/local/etc/php-fpm.d/zz-render.conf
 
-# 7. Configuración de Nginx usando printf (más robusto que echo)
-RUN printf "%s" "\
-server {\n\
-    listen 8080;\n\
-    server_name _;\n\
-    root /var/www/html/public;\n\
-    index index.php index.html;\n\
-\n\
-    location / {\n\
-        try_files \$uri \$uri/ /index.php?\$query_string;\n\
-    }\n\
-\n\
-    location ~ \\.php\$ {\n\
-        fastcgi_pass 127.0.0.1:9000;\n\
-        fastcgi_index index.php;\n\
-        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;\n\
-        include fastcgi_params;\n\
-    }\n\
-\n\
-    location ~ /\\.ht {\n\
-        deny all;\n\
-    }\n\
-}\n\
-" > /etc/nginx/sites-available/default && \
+# 7. Configuración de Nginx usando méthodo alternativo
+RUN echo 'server { \
+    listen 8080; \
+    server_name _; \
+    root /var/www/html/public; \
+    index index.php index.html; \
+    \
+    location / { \
+        try_files $uri $uri/ /index.php?$query_string; \
+    } \
+    \
+    location ~ \.php$ { \
+        fastcgi_pass 127.0.0.1:9000; \
+        fastcgi_index index.php; \
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name; \
+        include fastcgi_params; \
+    } \
+    \
+    location ~ /\.ht { \
+        deny all; \
+    } \
+}' > /etc/nginx/sites-available/default && \
     ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/ && \
     rm -f /etc/nginx/sites-enabled/default
 
