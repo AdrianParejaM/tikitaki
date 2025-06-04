@@ -5,8 +5,8 @@ rm -rf bootstrap/cache/*
 rm -rf storage/framework/cache/*
 rm -rf storage/framework/views/*
 
-# 2. Reconstruir autoloader
-composer dump-autoload --optimize
+# 2. Reconstruir autoloader sin plugins
+COMPOSER_ALLOW_SUPERUSER=1 composer dump-autoload --optimize --no-plugins
 
 # 3. Limpiar cachés Laravel
 php artisan clear-compiled
