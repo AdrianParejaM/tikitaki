@@ -35,8 +35,10 @@ RUN echo "listen = 9000" > /usr/local/etc/php-fpm.d/zz-render.conf
 
 # Copiar configuración Nginx
 COPY docker/nginx/default.conf /etc/nginx/sites-available/default
-RUN ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/ && \
-    rm -f /etc/nginx/sites-enabled/default
+RUN mkdir -p /etc/nginx/sites-enabled && \
+    rm -rf /etc/nginx/sites-enabled/* && \
+    ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/ && \
+    rm -f /etc/nginx/conf.d/default.conf
 
 # Permisos
 RUN chown -R www-data:www-data /var/www/html && \
